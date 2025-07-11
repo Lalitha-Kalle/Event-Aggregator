@@ -18,6 +18,26 @@ export const createEvent = async (req, res) => {
   }
 }
 
+export const updateEvent = async (req, res) => {
+  try {
+    const newEvent = await Event.findById(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    })
+
+    res.status(StatusCodes.OK).json({
+      message: "Successfully updated",
+      data: newEvent
+    })
+    
+  } catch (error) {
+    console.error("Error in updating event")
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: "Server Error"
+    })
+  }
+}
+
 export const getInterestedUsers = async (req, res) => {
   try {
     const { eventId } = req.params;
