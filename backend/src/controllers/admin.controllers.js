@@ -20,7 +20,7 @@ export const createEvent = async (req, res) => {
 
 export const updateEvent = async (req, res) => {
   try {
-    const newEvent = await Event.findById(req.params.id, req.body, {
+    const newEvent = await Event.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true
     })
@@ -29,11 +29,25 @@ export const updateEvent = async (req, res) => {
       message: "Successfully updated",
       data: newEvent
     })
-    
+
   } catch (error) {
     console.error("Error in updating event")
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: "Server Error"
+    })
+  }
+}
+
+export const deleteEvent = async (req, res) => {
+  try {
+    const deletedEvent = await Event.findByIdAndDelete(req.params.id)
+    res.status(StatusCodes.OK).json({
+      message: "Deleted event"
+    })
+  } catch (error) {
+    console.error("Error in deleting event")
+    res.status(StatusCodes.OK).json({
+      message: "server error"
     })
   }
 }
