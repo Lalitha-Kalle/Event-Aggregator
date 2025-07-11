@@ -4,9 +4,12 @@ import connectDB from './src/db/db.js'
 import authRouter from './src/routes/v1/auth.routes.js'
 import userRouter from './src/routes/v1/user.routes.js'
 import adminRouter from './src/routes/v1/admin.routes.js'
+import cors from "cors";
+
 dotenv.config()
 
 const app = express()
+app.use(cors());
 const url = process.env.MONGO_URL
 
 app.use(express.json())
