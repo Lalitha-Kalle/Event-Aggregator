@@ -17,6 +17,20 @@ export const getUserProfile = async (req, res) =>{
   }
 }
 
+export const getEvents = async (req, res) => {
+  try {
+    const events = await Event.find();
+    res.status(StatusCodes.OK).json({
+      data: events
+    })
+  } catch (error) {
+    console.error("Error in geting events")
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: "Server Error"
+    })
+  }
+}
+
 export const markInterest = async (req, res ) => {
   try {
     const { eventId } = req.params;

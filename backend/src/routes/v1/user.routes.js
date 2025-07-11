@@ -1,9 +1,11 @@
 import { Router } from "express";
-import { getUserProfile, markInterest } from "../../controllers/user.controllers.js";
+import { getEvents, getUserProfile, markInterest } from "../../controllers/user.controllers.js";
 
 const userRouter = Router()
 
 userRouter.get("/profile", getUserProfile)
+
+userRouter.get("/events", getEvents)
 
 userRouter.post("/interest/:eventId", markInterest) 
 
