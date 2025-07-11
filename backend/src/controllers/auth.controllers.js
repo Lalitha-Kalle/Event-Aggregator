@@ -11,7 +11,9 @@ const generateToken = (userId, role) => {
   return jwt.sign(
     { userId, role },
     process.env.JWT_SECRET,
-    process.env.JWT_EXPIRY
+    {
+      expiresIn: process.env.JWT_EXPIRY
+    }
   )
 }
 
@@ -47,11 +49,30 @@ export const signup = async (req, res) => {
     })
 
   } catch (error) {
-    console.error('Signup Error:', err);
+    console.error('Signup Error:', error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Server error during signup' });
   }
 }
 
-export const login = (req, res) => {
-  res.send("HI")
-}
+export const login = async (req, res) => {
+  try {
+    const { email, password, role } = req.body;
+    const Model = role === 'admin' ? Admin : User;
+
+    const user = await Model.findOne({ email });
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) return res.status(401).json({ message: 'Incorrect password' });
+
+    const token = generateToken(user._id, user.role);
+
+    res.status(200).json({
+      token,
+      user: { name: user.name, email: user.email, role: user.role },
+    });
+  } catch (err) {
+    console.error('Login Error:', err);
+    res.status(500).json({ message: 'Server error during login' });
+  }
+};
