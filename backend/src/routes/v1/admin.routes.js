@@ -1,7 +1,8 @@
 import { Router } from "express";
+import { getInterestedUsers } from "../../controllers/admin.controllers.js";
 
 const adminRouter = Router()
 
-adminRouter.get('/events/:eventId/interested', getInterestedUsers)
+adminRouter.get('/event/:eventId/interested-users', getInterestedUsers)
 
 export default adminRouter
