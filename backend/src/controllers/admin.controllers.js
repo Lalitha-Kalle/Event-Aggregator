@@ -2,6 +2,22 @@ import Event from '../models/events.model.js';
 import User from '../models/user.model.js';
 import StatusCodes from 'http-status-codes'
 
+export const createEvent = async (req, res) => {
+  try {
+    const event = req.body;
+    await Event.create(event);
+
+    res.status(StatusCodes.CREATED).json({
+      message: "Event created"
+    })
+  } catch (error) {
+    console.error("Error in creating event", error)
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: "Server error"
+    })
+  }
+}
+
 export const getInterestedUsers = async (req, res) => {
   try {
     const { eventId } = req.params;
